@@ -47,27 +47,26 @@ export const createUser = async (userProfile, email, password) => {
     [email, newPassword],
   );
 
-  // 2. send profile only to AIS
-  const response = await fetch(
-    "https://ais-simulated-legacy.onrender.com/api/students",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userProfile),
+  // 2. send profile to adapter layer, not directly to AIS
+  const response = await fetch("http://localhost:4000/user/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(userProfile),
+  });
 
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result.message || "Failed to register student in AIS");
+    throw new Error(
+      result.message || "Failed to register student in adapter layer",
+    );
   }
 
   return {
     localUserId: newUser.insertId,
-    aisStudent: result,
+    adapterResult: result,
   };
 };
 

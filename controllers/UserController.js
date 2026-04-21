@@ -1,14 +1,30 @@
 import * as userModel from "../models/UserModel.js";
 
 export const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { name, birthdate, address, program, studentStatus, email, password } =
+    req.body;
 
   try {
-    const user = await userModel.createUser(email, password);
-    res.status(201).json({ success: true, message: user });
+    const userProfile = {
+      name,
+      birthdate,
+      address,
+      program,
+      studentStatus,
+    };
+
+    const result = await userModel.createUser(userProfile, email, password);
+
+    res.status(201).json({
+      success: true,
+      message: result,
+    });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
@@ -17,12 +33,17 @@ export const login = async (req, res) => {
 
   try {
     const token = await userModel.login(email, password);
-    res.status(201).json({
+
+    res.status(200).json({
       success: true,
-      message: [{ result: "Login Successful" }, token],
+      message: "Login Successful",
+      token,
     });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };

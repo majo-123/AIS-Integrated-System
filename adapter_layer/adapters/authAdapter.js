@@ -26,6 +26,7 @@ export const create = async (profile) => {
 
   return result;
 };
+<<<<<<< HEAD
 
 export const findById = async (studentId) => {
   const cleanId = String(studentId).trim();
@@ -49,3 +50,5 @@ export const findById = async (studentId) => {
     studentStatus: data.studentStatus,
   };
 };
+=======
+>>>>>>> 83fbd20f77ddd9c55fcda91141623ec2fd6535a3

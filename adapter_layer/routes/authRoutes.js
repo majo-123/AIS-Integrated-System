@@ -7,5 +7,6 @@ authRoutes.get("/test", (req, res) => {
 });
 
 authRoutes.post("/register", AuthController.registerStudent);
+authRoutes.get("/profile/:id", AuthController.getStudentProfile);
 
 export default authRoutes;

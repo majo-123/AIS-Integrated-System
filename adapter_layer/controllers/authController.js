@@ -1,25 +1,35 @@
 import * as AuthService from "../services/authService.js";
+
 export const registerStudent = async (req, res) => {
-  const { firstName, lastName, dob, course, major, address, status } = req.body;
   try {
-    const studentProfile = {
-      firstName,
-      lastName,
-      dob,
-      course,
-      major,
-      address,
-      status,
-    };
-    const result = await AuthService.registerStudent(studentProfile);
-    res.status(200).json({
+    const result = await AuthService.registerStudent(req.body);
+
+    res.status(201).json({
       success: true,
-      message: result,
+      student: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "An error occured while registering the student.",
+      message: error.message,
+    });
+  }
+};
+
+export const getStudentProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const studentProfile = await AuthService.getStudentProfile(id);
+
+    res.status(200).json({
+      success: true,
+      studentProfile,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };

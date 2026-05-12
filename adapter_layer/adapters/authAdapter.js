@@ -26,3 +26,26 @@ export const create = async (profile) => {
 
   return result;
 };
+
+export const findById = async (studentId) => {
+  const cleanId = String(studentId).trim();
+
+  const response = await fetch(
+    `https://ais-simulated-legacy.onrender.com/api/students/${cleanId}`,
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch student from AIS");
+  }
+
+  return {
+    id: data._id,
+    name: data.name,
+    birthdate: data.birthdate,
+    program: data.program,
+    address: data.address,
+    studentStatus: data.studentStatus,
+  };
+};
